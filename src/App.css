@@ -671,6 +671,52 @@ body {
   .dashboard-header h1 {
     font-size: 2.5rem;
   }
+  /* Auth Pages Mobile Styles */
+  .auth-container {
+    padding: 0.5rem;
+    min-height: 100vh;
+  }
+
+  .auth-card {
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin: 0.5rem;
+  }
+
+  .auth-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .auth-header p {
+    font-size: 0.9rem;
+  }
+
+  .auth-input {
+    padding: 0.9rem 0.9rem 0.9rem 2.8rem;
+    font-size: 0.95rem;
+  }
+
+  .input-icon {
+    left: 0.9rem;
+  }
+
+  .password-toggle {
+    right: 0.9rem;
+  }
+
+  .auth-button {
+    padding: 0.9rem;
+    font-size: 0.95rem;
+    min-height: 48px;
+  }
+
+  .auth-footer {
+    margin-top: 1.5rem;
+  }
+
+  .auth-footer p {
+    font-size: 0.9rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -700,5 +746,32 @@ body {
 
   .activity-time {
     margin-left: 0;
+  }
+  .auth-card {
+    padding: 1rem;
+    margin: 0.25rem;
+  }
+
+  .auth-header h2 {
+    font-size: 1.6rem;
+  }
+
+  .auth-input {
+    padding: 0.8rem 0.8rem 0.8rem 2.5rem;
+    font-size: 0.9rem;
+  }
+
+  .input-icon {
+    left: 0.8rem;
+  }
+
+  .password-toggle {
+    right: 0.8rem;
+  }
+
+  .auth-button {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+    min-height: 44px;
   }
 }
