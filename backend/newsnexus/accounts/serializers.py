@@ -8,6 +8,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ('mobile', 'name', 'date_joined')
 
+# accounts/serializers.py
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -15,6 +17,19 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['mobile'] = user.mobile
         token['name'] = user.name
         return token
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        
+        # ✅ Add extra user data in the login response
+        data['user'] = {
+            'mobile': self.user.mobile,
+            'name': self.user.name,
+            'date_joined': self.user.date_joined,
+        }
+
+        return data
+
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)

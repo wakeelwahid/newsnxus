@@ -19,16 +19,10 @@ class RegisterView(generics.CreateAPIView):
             "user": UserSerializer(user).data
         }, status=status.HTTP_201_CREATED)
 
+
 class LoginView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
-    
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        if response.status_code == 200:
-            # Add user data to response
-            serializer = UserSerializer(request.user)
-            response.data['user'] = serializer.data
-        return response
+
 
 class UserProfileView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
