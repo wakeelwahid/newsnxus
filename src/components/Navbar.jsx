@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { User, LogOut, Home, BarChart3 } from 'lucide-react';
+import { LogOut, User, Home, PlusCircle } from 'lucide-react';
 
 function Navbar() {
   const { user, logout } = useAuth();
@@ -20,7 +20,7 @@ function Navbar() {
           NewsNexus
         </Link>
         
-        <div className="nav-menu">
+        <div className="nav-links">
           <Link to="/" className="nav-link">
             <Home size={20} />
             Home
@@ -29,25 +29,23 @@ function Navbar() {
           {user ? (
             <>
               <Link to="/dashboard" className="nav-link">
-                <BarChart3 size={20} />
+                <User size={20} />
                 Dashboard
               </Link>
-              <div className="user-menu">
-                <span className="user-name">
-                  <User size={20} />
-                  {user.name}
-                </span>
-                <button onClick={handleLogout} className="logout-btn">
-                  <LogOut size={20} />
-                  Logout
-                </button>
-              </div>
+              <button onClick={handleLogout} className="nav-link logout-btn">
+                <LogOut size={20} />
+                Logout
+              </button>
             </>
           ) : (
-            <div className="auth-links">
-              <Link to="/login" className="nav-link">Login</Link>
-              <Link to="/signup" className="nav-link signup-link">Sign Up</Link>
-            </div>
+            <>
+              <Link to="/login" className="nav-link">
+                Login
+              </Link>
+              <Link to="/signup" className="nav-link signup-btn">
+                Sign Up
+              </Link>
+            </>
           )}
         </div>
       </div>

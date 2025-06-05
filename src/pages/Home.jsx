@@ -2,39 +2,50 @@
 import React, { useState, useEffect } from 'react';
 import { ThumbsUp, ThumbsDown, Calendar, User } from 'lucide-react';
 
+const mockArticles = [
+  {
+    id: 1,
+    title: "Breaking: Major Technology Breakthrough Announced",
+    author: "Tech Reporter",
+    date: "2024-01-15",
+    content: "Scientists have announced a groundbreaking discovery that could revolutionize the way we think about renewable energy...",
+    likes: 24,
+    dislikes: 3,
+    category: "Technology"
+  },
+  {
+    id: 2,
+    title: "Global Climate Summit Reaches Historic Agreement",
+    author: "Environmental Correspondent",
+    date: "2024-01-14",
+    content: "World leaders have come together to sign the most comprehensive climate agreement in history...",
+    likes: 45,
+    dislikes: 8,
+    category: "Environment"
+  },
+  {
+    id: 3,
+    title: "Economic Markets Show Strong Recovery Signs",
+    author: "Financial Analyst",
+    date: "2024-01-13",
+    content: "Recent data indicates that global markets are showing positive trends after months of uncertainty...",
+    likes: 18,
+    dislikes: 2,
+    category: "Economics"
+  }
+];
+
 function Home() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchNews();
-  }, []);
-
-  const fetchNews = async () => {
-    try {
-      // Using JSONPlaceholder as demo API
-      const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=10');
-      const posts = await response.json();
-      
-      // Transform posts to news articles with like/dislike counts
-      const newsArticles = posts.map(post => ({
-        id: post.id,
-        title: post.title,
-        body: post.body,
-        author: `User ${post.userId}`,
-        date: new Date().toLocaleDateString(),
-        likes: Math.floor(Math.random() * 100),
-        dislikes: Math.floor(Math.random() * 20),
-        image: `https://picsum.photos/400/200?random=${post.id}`
-      }));
-      
-      setArticles(newsArticles);
-    } catch (error) {
-      console.error('Error fetching news:', error);
-    } finally {
+    // Simulate API call
+    setTimeout(() => {
+      setArticles(mockArticles);
       setLoading(false);
-    }
-  };
+    }, 1000);
+  }, []);
 
   const handleLike = (id) => {
     setArticles(articles.map(article => 
@@ -53,35 +64,39 @@ function Home() {
   };
 
   if (loading) {
-    return <div className="loading">Loading news...</div>;
+    return <div className="loading">Loading latest news...</div>;
   }
 
   return (
     <div className="home">
       <div className="hero-section">
-        <h1>Welcome to NewsNexus</h1>
-        <p>Your trusted source for the latest news and updates</p>
+        <div className="hero-content">
+          <h1>Welcome to NewsNexus</h1>
+          <p>Your trusted source for the latest news and updates from around the world</p>
+        </div>
       </div>
       
-      <div className="news-container">
-        <h2>Latest Articles</h2>
-        <div className="articles-grid">
-          {articles.map(article => (
-            <div key={article.id} className="article-card">
-              <img src={article.image} alt={article.title} className="article-image" />
-              <div className="article-content">
+      <div className="container">
+        <div className="articles-section">
+          <h2>Latest News</h2>
+          <div className="articles-grid">
+            {articles.map(article => (
+              <div key={article.id} className="article-card">
+                <div className="article-header">
+                  <span className="article-category">{article.category}</span>
+                </div>
                 <h3 className="article-title">{article.title}</h3>
-                <p className="article-body">{article.body.substring(0, 150)}...</p>
+                <p className="article-content">{article.content}</p>
                 
                 <div className="article-meta">
-                  <span className="article-author">
+                  <div className="article-author">
                     <User size={16} />
-                    {article.author}
-                  </span>
-                  <span className="article-date">
+                    <span>{article.author}</span>
+                  </div>
+                  <div className="article-date">
                     <Calendar size={16} />
-                    {article.date}
-                  </span>
+                    <span>{article.date}</span>
+                  </div>
                 </div>
                 
                 <div className="article-actions">
@@ -89,20 +104,20 @@ function Home() {
                     className="like-btn"
                     onClick={() => handleLike(article.id)}
                   >
-                    <ThumbsUp size={18} />
-                    {article.likes}
+                    <ThumbsUp size={16} />
+                    <span>{article.likes}</span>
                   </button>
                   <button 
                     className="dislike-btn"
                     onClick={() => handleDislike(article.id)}
                   >
-                    <ThumbsDown size={18} />
-                    {article.dislikes}
+                    <ThumbsDown size={16} />
+                    <span>{article.dislikes}</span>
                   </button>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>

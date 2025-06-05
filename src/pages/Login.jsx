@@ -29,7 +29,7 @@ function Login() {
       await login(email, password);
       navigate('/dashboard');
     } catch (error) {
-      setError('Login failed. Please try again.');
+      setError('Invalid credentials. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -40,7 +40,7 @@ function Login() {
       <div className="auth-card">
         <div className="auth-header">
           <h2>Welcome Back</h2>
-          <p>Sign in to your account</p>
+          <p>Sign in to your NewsNexus account</p>
         </div>
 
         {error && <div className="error-message">{error}</div>}
@@ -86,12 +86,12 @@ function Login() {
             className="auth-button"
             disabled={loading}
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
 
         <div className="auth-footer">
-          <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
+          <p>Don't have an account? <Link to="/signup">Sign up here</Link></p>
         </div>
       </div>
     </div>
