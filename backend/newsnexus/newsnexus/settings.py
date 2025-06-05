@@ -100,12 +100,12 @@ CORS_ALLOW_ALL_ORIGINS = True  # Use this temporarily; restrict in production
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Optional: if you have a 'static' folder
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    BASE_DIR / "newsnexus" / "static",  # You already saw warning from this
 ]
+
+STATIC_ROOT = BASE_DIR / "newsnexus" / "staticfiles"
 
 # Whitenoise config (enable compression, caching)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
