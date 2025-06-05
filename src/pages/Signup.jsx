@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
 
 function Signup() {
   const [name, setName] = useState('');
@@ -52,7 +52,7 @@ function Signup() {
       <div className="auth-card">
         <div className="auth-header">
           <h2>Create Account</h2>
-          <p>Sign up for NewsNexus</p>
+          <p>Join NewsNexus today</p>
         </div>
 
         {error && <div className="error-message">{error}</div>}
@@ -111,7 +111,7 @@ function Signup() {
             <div className="input-wrapper">
               <Lock className="input-icon" size={20} />
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Confirm password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -126,7 +126,7 @@ function Signup() {
             className="auth-button"
             disabled={loading}
           >
-            {loading ? 'Creating Account...' : 'Sign Up'}
+            {loading ? 'Creating Account...' : 'Create Account'}
           </button>
         </form>
 

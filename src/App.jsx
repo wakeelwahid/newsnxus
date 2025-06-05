@@ -11,12 +11,17 @@ import './App.css';
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
-  return user ? children : <Navigate to="/login" />;
+  return user ? children : <Navigate to="/login" replace />;
 }
 
 function PublicRoute({ children }) {
   const { user } = useAuth();
-  return !user ? children : <Navigate to="/dashboard" />;
+  return !user ? children : <Navigate to="/dashboard" replace />;
+}
+
+function HomeRoute() {
+  const { user } = useAuth();
+  return user ? <Navigate to="/dashboard" replace /> : <Home />;
 }
 
 function App() {
@@ -26,7 +31,7 @@ function App() {
         <div className="App">
           <Navbar />
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<HomeRoute />} />
             <Route 
               path="/login" 
               element={
