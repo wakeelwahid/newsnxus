@@ -2,35 +2,57 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
+import { Phone, Shield, User, Send } from 'lucide-react';
 
 function Signup() {
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [mobile, setMobile] = useState('');
+  const [otp, setOtp] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [otpLoading, setOtpLoading] = useState(false);
   
-  const { signup } = useAuth();
+  const { signup, sendOTP } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSendOTP = async (e) => {
     e.preventDefault();
     
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !mobile) {
       setError('Please fill in all fields');
       return;
     }
 
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
+    if (mobile.length !== 10) {
+      setError('Please enter valid 10-digit mobile number');
       return;
     }
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters');
+    setOtpLoading(true);
+    setError('');
+
+    try {
+      await sendOTP(mobile);
+      setOtpSent(true);
+      setError('');
+    } catch (error) {
+      setError('Failed to send OTP. Please try again.');
+    } finally {
+      setOtpLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!name || !mobile || !otp) {
+      setError('Please fill in all fields');
+      return;
+    }
+
+    if (otp.length !== 4) {
+      setError('Please enter valid 4-digit OTP');
       return;
     }
 
@@ -38,10 +60,10 @@ function Signup() {
     setError('');
 
     try {
-      await signup(name, email, password);
+      await signup(name, mobile, otp);
       navigate('/dashboard');
     } catch (error) {
-      setError('Signup failed. Please try again.');
+      setError('Invalid OTP. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -52,12 +74,12 @@ function Signup() {
       <div className="auth-card">
         <div className="auth-header">
           <h2>Create Account</h2>
-          <p>Join NewsNexus today</p>
+          <p>Join NewsNexus with mobile verification</p>
         </div>
 
         {error && <div className="error-message">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={otpSent ? handleSubmit : handleSendOTP} className="auth-form">
           <div className="input-group">
             <div className="input-wrapper">
               <User className="input-icon" size={20} />
@@ -67,6 +89,7 @@ function Signup() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="auth-input"
+                disabled={otpSent}
                 required
               />
             </div>
@@ -74,64 +97,76 @@ function Signup() {
 
           <div className="input-group">
             <div className="input-wrapper">
-              <Mail className="input-icon" size={20} />
+              <Phone className="input-icon" size={20} />
               <input
-                type="email"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="tel"
+                placeholder="Mobile number (10 digits)"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value.replace(/\D/g, '').slice(0, 10))}
                 className="auth-input"
+                disabled={otpSent}
                 required
               />
             </div>
           </div>
 
-          <div className="input-group">
-            <div className="input-wrapper">
-              <Lock className="input-icon" size={20} />
-              <input
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="auth-input"
-                required
-              />
-              <button
-                type="button"
-                className="password-toggle"
-                onClick={() => setShowPassword(!showPassword)}
+          {otpSent && (
+            <div className="input-group">
+              <div className="input-wrapper">
+                <Shield className="input-icon" size={20} />
+                <input
+                  type="text"
+                  placeholder="Enter 4-digit OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                  className="auth-input"
+                  required
+                />
+              </div>
+            </div>
+          )}
+
+          {!otpSent ? (
+            <button 
+              type="submit" 
+              className="auth-button"
+              disabled={otpLoading}
+            >
+              <Send size={20} />
+              {otpLoading ? 'Sending OTP...' : 'Send OTP'}
+            </button>
+          ) : (
+            <>
+              <button 
+                type="submit" 
+                className="auth-button"
+                disabled={loading}
               >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                {loading ? 'Creating Account...' : 'Verify & Create Account'}
               </button>
-            </div>
-          </div>
-
-          <div className="input-group">
-            <div className="input-wrapper">
-              <Lock className="input-icon" size={20} />
-              <input
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Confirm password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="auth-input"
-                required
-              />
-            </div>
-          </div>
-
-          <button 
-            type="submit" 
-            className="auth-button"
-            disabled={loading}
-          >
-            {loading ? 'Creating Account...' : 'Create Account'}
-          </button>
+              
+              <button 
+                type="button" 
+                onClick={() => {
+                  setOtpSent(false);
+                  setOtp('');
+                  setError('');
+                }}
+                className="auth-button auth-button-secondary"
+              >
+                Change Details
+              </button>
+            </>
+          )}
         </form>
 
         <div className="auth-footer">
           <p>Already have an account? <Link to="/login">Sign in here</Link></p>
+          {otpSent && (
+            <p className="otp-info">
+              OTP sent to +91{mobile}. Check console for demo OTP.
+            </p>
+          )}
         </div>
       </div>
     </div>

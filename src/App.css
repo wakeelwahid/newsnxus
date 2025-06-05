@@ -346,16 +346,25 @@ body {
 }
 
 .auth-button {
+  width: 100%;
+  padding: 1rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 1.25rem;
   border: none;
-  border-radius: 15px;
-  font-size: 1.1rem;
+  border-radius: 12px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.auth-button-secondary {
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  margin-top: 0.5rem;
 }
 
 .auth-button:hover:not(:disabled) {
@@ -374,11 +383,26 @@ body {
   margin-top: 2rem;
 }
 
+.auth-footer p {
+  margin: 0;
+  color: #6c757d;
+}
+
 .auth-footer a {
   color: #667eea;
   text-decoration: none;
   font-weight: 600;
-  transition: color 0.3s ease;
+}
+
+.otp-info {
+  margin-top: 1rem !important;
+  padding: 0.75rem;
+  background-color: #e7f3ff;
+  border: 1px solid #b8daff;
+  border-radius: 8px;
+  color: #004085 !important;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 .auth-footer a:hover {
