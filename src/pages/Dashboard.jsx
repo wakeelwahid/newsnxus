@@ -7,36 +7,37 @@ function Dashboard() {
 
   const stats = [
     {
-      title: "Articles Read",
-      value: "24",
+      title: "Total Posts",
+      value: "48",
       icon: BookOpen,
       color: "#667eea"
     },
     {
-      title: "Following",
-      value: "12",
+      title: "Total Likes",
+      value: "156",
       icon: Users,
-      color: "#764ba2"
+      color: "#48bb78"
     },
     {
-      title: "Engagement",
-      value: "89%",
+      title: "Total Dislikes",
+      value: "12",
       icon: TrendingUp,
-      color: "#f093fb"
+      color: "#f56565"
     },
     {
       title: "Days Active",
       value: "15",
       icon: Calendar,
-      color: "#f5576c"
+      color: "#f093fb"
     }
   ];
 
   const recentActivity = [
-    { action: "Read article: 'Technology Breakthrough'", time: "2 hours ago" },
-    { action: "Liked article: 'Climate Summit Agreement'", time: "4 hours ago" },
-    { action: "Followed Tech Reporter", time: "1 day ago" },
-    { action: "Commented on 'Economic Recovery'", time: "2 days ago" }
+    { action: "Liked article: 'Technology Breakthrough'", time: "2 hours ago", type: "like" },
+    { action: "Disliked article: 'Climate Summit Agreement'", time: "4 hours ago", type: "dislike" },
+    { action: "Liked article: 'Economic Recovery'", time: "1 day ago", type: "like" },
+    { action: "Liked article: 'Sports News Update'", time: "2 days ago", type: "like" },
+    { action: "Disliked article: 'Weather Report'", time: "3 days ago", type: "dislike" }
   ];
 
   return (
@@ -66,7 +67,7 @@ function Dashboard() {
             <h2>Recent Activity</h2>
             <div className="activity-list">
               {recentActivity.map((activity, index) => (
-                <div key={index} className="activity-item">
+                <div key={index} className={`activity-item ${activity.type}`}>
                   <span>{activity.action}</span>
                   <span className="activity-time">{activity.time}</span>
                 </div>
@@ -75,7 +76,26 @@ function Dashboard() {
           </div>
 
           <div className="profile-section">
-            <h2>Profile Information</h2>
+            <h2>Post Analytics</h2>
+            <div className="analytics-grid">
+              <div className="analytics-card">
+                <h3>Engagement Rate</h3>
+                <div className="analytics-value">92.8%</div>
+                <p>Likes vs Total Interactions</p>
+              </div>
+              <div className="analytics-card">
+                <h3>Most Liked Post</h3>
+                <div className="analytics-value">45 likes</div>
+                <p>"Technology Breakthrough"</p>
+              </div>
+              <div className="analytics-card">
+                <h3>Weekly Growth</h3>
+                <div className="analytics-value">+12%</div>
+                <p>Compared to last week</p>
+              </div>
+            </div>
+            
+            <h2 className="profile-title">Profile Information</h2>
             <div className="profile-info">
               <div className="profile-item">
                 <strong>Name:</strong> {user?.name}
