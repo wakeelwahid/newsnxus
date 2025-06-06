@@ -29,3 +29,22 @@ class UserProfileView(generics.RetrieveAPIView):
     
     def get_object(self):
         return self.request.user
+
+
+# views.py
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+import requests  # <- Must be AFTER DRF imports, just in case
+
+@api_view(['GET'])
+def proxy_news(request):
+    url = "https://newsapi.org/v2/everything?q=technology&pageSize=10&sortBy=publishedAt&apiKey=a0fe55c23ecf420f952ff5f45c31b797"
+    
+    try:
+        res = requests.get(url)
+        return Response(res.json())
+    except requests.exceptions.RequestException as e:
+        return Response({"error": str(e)}, status=500)
+
+
